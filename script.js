@@ -458,7 +458,9 @@ function getPersonalMatrixTokens(baseSign) {
     .forEach((token) => tokens.add(token));
 
   if (personalMatrixCardinalSigns.includes(baseSign)) {
-    personalMatrixCardinalSigns.forEach((sign) => addAssignedTokensAtSign(tokens, sign));
+    personalMatrixCardinalSigns
+      .filter((sign) => sign !== baseSign)
+      .forEach((sign) => addAssignedTokensAtSign(tokens, sign));
   }
 
   return tokens;
