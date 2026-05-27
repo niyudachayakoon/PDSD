@@ -433,10 +433,10 @@ function getPersonalMatrixRows() {
   const ascendantLordSign = getAssignedSignForSignLord(ascendantSign);
 
   return [
-    { label: "จันทร์", tokens: getPersonalMatrixTokens(moonSign, false) },
-    { label: "ตนุจันทร์", tokens: getPersonalMatrixTokens(moonLordSign, true) },
-    { label: "ลัคนา", tokens: getPersonalMatrixTokens(ascendantSign, true) },
-    { label: "ตนุลัคนา", tokens: getPersonalMatrixTokens(ascendantLordSign, true) },
+    { label: "จันทร์", tokens: getPersonalMatrixTokens(moonSign) },
+    { label: "ตนุจันทร์", tokens: getPersonalMatrixTokens(moonLordSign) },
+    { label: "ลัคนา", tokens: getPersonalMatrixTokens(ascendantSign) },
+    { label: "ตนุลัคนา", tokens: getPersonalMatrixTokens(ascendantLordSign) },
   ];
 }
 
@@ -445,14 +445,17 @@ function getAssignedSignForSignLord(sign) {
   return astroAssignments[lordToken];
 }
 
-function getPersonalMatrixTokens(baseSign, onlyEightAtOneOffset) {
+function getPersonalMatrixTokens(baseSign) {
   const tokens = new Set();
 
   addAssignedTokensAtSign(tokens, baseSign);
-  [4, 7, 8, 11].forEach((offset) => addAssignedTokensAtSign(tokens, getOffsetSign(baseSign, offset)));
+  [4, 7, 8].forEach((offset) => addAssignedTokensAtSign(tokens, getOffsetSign(baseSign, offset)));
+  getAssignedNumberTokensAtSign(getOffsetSign(baseSign, 11))
+    .filter((token) => token !== "๘" && token !== "๙")
+    .forEach((token) => tokens.add(token));
 
   getAssignedNumberTokensAtSign(getOffsetSign(baseSign, 1))
-    .filter((token) => !onlyEightAtOneOffset || token === "๘")
+    .filter((token) => token === "๘" || token === "๙")
     .forEach((token) => tokens.add(token));
 
   if (personalMatrixCardinalSigns.includes(baseSign)) {
